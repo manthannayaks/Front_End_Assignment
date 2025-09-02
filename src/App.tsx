@@ -18,6 +18,7 @@ const columns: Column<User>[] = [
 
 export default function App() {
   const [email, setEmail] = React.useState('')
+  const [username, setUsername] = React.useState('')
   const [lastKey, setLastKey] = React.useState<string | null>(null)
   const [dark, setDark] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
@@ -30,6 +31,11 @@ export default function App() {
     }
     setEmail(val)
   }
+
+  // Check if username already exists in DataTable
+  const usernameTaken = sample.some(
+    (user) => user.name.toLowerCase() === username.toLowerCase()
+  )
 
   return (
     <div className={dark ? 'dark' : ''}>
@@ -59,7 +65,7 @@ export default function App() {
           <div className="space-y-4">
             <h2 className="text-xl font-medium">InputField</h2>
 
-            {/* ✅ Email Input with Gmail auto-complete + Clear button */}
+            {/* ✅ Email Input */}
             <div className="flex gap-2 items-center">
               <InputField
                 label="Email"
@@ -73,33 +79,38 @@ export default function App() {
               />
               <button
                 onClick={() => setEmail('')}
-                className="px-3 py-1.5 rounded-lg bg-red-500 text-white"
+                className="px-2 py-1 text-sm rounded-md bg-red-500 text-white hover:bg-red-600"
               >
-                Clear All
+                Clear
               </button>
             </div>
 
-            {/* ✅ Password input */}
+            {/* ✅ Password Input */}
             <InputField
               label="Password"
-              placeholder="••••••••"
+              placeholder="**********"
               type="password"
               passwordToggle
               variant="filled"
               size="md"
             />
 
-            {/* ✅ Invalid input */}
+            {/* ✅ Username validation against DataTable */}
             <InputField
-              label="Username (invalid)"
-              placeholder="username"
-              invalid
-              errorMessage="This username is taken."
+              label="Username"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              invalid={usernameTaken}
+              errorMessage={
+                usernameTaken ? "This username already exists in the table." : undefined
+              }
+              helperText={!usernameTaken ? "This username is available." : undefined}
               variant="ghost"
               size="sm"
             />
 
-            {/* ✅ Loading state */}
+            {/* ✅ Loading Input */}
             <InputField
               label="Loading state"
               placeholder="Fetching suggestion..."
@@ -108,7 +119,7 @@ export default function App() {
               variant="outlined"
             />
 
-            {/* ✅ Show last pressed key */}
+            {/* ✅ Key Press Demo */}
             <div
               tabIndex={0}
               onKeyDown={(e) => setLastKey(e.key)}
@@ -119,6 +130,7 @@ export default function App() {
             {lastKey && <p className="text-sm text-blue-500">Last key pressed: {lastKey}</p>}
           </div>
 
+          {/* ✅ DataTable */}
           <div className="space-y-4">
             <h2 className="text-xl font-medium">DataTable</h2>
             <DataTable<User>
