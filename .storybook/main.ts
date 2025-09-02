@@ -16,11 +16,6 @@ const config: StorybookConfig = {
   },
 };
 export default {
-  // your existing config...
-  staticDirs: ['../public'],
-  viteFinal: async (config) => {
-    // This makes Storybook assets work on GitHub Pages
-    config.base = '/Front_End_Assignment/';
     return config;
   },
 };
