@@ -2,6 +2,7 @@
   "name": "frontend-assignment-components",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://manthannayaks.github.io/Front_End_Assignment/",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,6 +10,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "deploy-storybook": "storybook-to-ghpages",
     "test": "vitest"
   },
   "dependencies": {
