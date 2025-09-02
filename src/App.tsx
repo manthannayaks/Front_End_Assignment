@@ -17,9 +17,19 @@ const columns: Column<User>[] = [
 ]
 
 export default function App() {
-  const [value, setValue] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [lastKey, setLastKey] = React.useState<string | null>(null)
   const [dark, setDark] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
+
+  // Ensure email always ends with @gmail.com
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value
+    if (!val.endsWith('@gmail.com')) {
+      val = val.replace(/@.*/, '') + '@gmail.com'
+    }
+    setEmail(val)
+  }
 
   return (
     <div className={dark ? 'dark' : ''}>
@@ -34,7 +44,10 @@ export default function App() {
               Toggle {dark ? 'Light' : 'Dark'}
             </button>
             <button
-              onClick={() => { setLoading(true); setTimeout(() => setLoading(false), 1500)}}
+              onClick={() => {
+                setLoading(true)
+                setTimeout(() => setLoading(false), 1500)
+              }}
               className="px-3 py-1.5 rounded-xl border border-gray-300 dark:border-gray-700"
             >
               Simulate Loading
@@ -45,16 +58,28 @@ export default function App() {
         <section className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4">
             <h2 className="text-xl font-medium">InputField</h2>
-            <InputField
-              label="Email"
-              placeholder="you@example.com"
-              helperText="We’ll never share your email."
-              value={value}
-              onChange={e => setValue(e.target.value)}
-              variant="outlined"
-              size="md"
-              clearable
-            />
+
+            {/* ✅ Email Input with Gmail auto-complete + Clear button */}
+            <div className="flex gap-2 items-center">
+              <InputField
+                label="Email"
+                placeholder="yourname@gmail.com"
+                helperText="Email will always end with @gmail.com"
+                value={email}
+                onChange={handleEmailChange}
+                variant="outlined"
+                size="md"
+                clearable
+              />
+              <button
+                onClick={() => setEmail('')}
+                className="px-3 py-1.5 rounded-lg bg-red-500 text-white"
+              >
+                Clear All
+              </button>
+            </div>
+
+            {/* ✅ Password input */}
             <InputField
               label="Password"
               placeholder="••••••••"
@@ -63,6 +88,8 @@ export default function App() {
               variant="filled"
               size="md"
             />
+
+            {/* ✅ Invalid input */}
             <InputField
               label="Username (invalid)"
               placeholder="username"
@@ -71,6 +98,8 @@ export default function App() {
               variant="ghost"
               size="sm"
             />
+
+            {/* ✅ Loading state */}
             <InputField
               label="Loading state"
               placeholder="Fetching suggestion..."
@@ -78,6 +107,16 @@ export default function App() {
               helperText="Displays a spinner."
               variant="outlined"
             />
+
+            {/* ✅ Show last pressed key */}
+            <div
+              tabIndex={0}
+              onKeyDown={(e) => setLastKey(e.key)}
+              className="p-3 border rounded-lg dark:border-gray-700"
+            >
+              Press any key while focused here
+            </div>
+            {lastKey && <p className="text-sm text-blue-500">Last key pressed: {lastKey}</p>}
           </div>
 
           <div className="space-y-4">
