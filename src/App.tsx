@@ -1,5 +1,5 @@
-// App.tsx
 import { useState } from "react";
+import { InputField } from "./components/InputField";
 import { DataTable, Column } from "./components/DataTable";
 
 interface User {
@@ -22,25 +22,44 @@ const columns: Column<User>[] = [
 ];
 
 function App() {
+  const [inputValue, setInputValue] = useState("");
   const [selectedRows, setSelectedRows] = useState<User[]>([]);
 
   return (
     <div className="p-6 space-y-10">
       <h1 className="text-2xl font-bold">Frontend Assignment Demo</h1>
 
-      {/* ✅ DataTable with selection & sorting */}
-      <DataTable<User>
-        data={sampleData}
-        columns={columns}
-        selectable
-        onRowSelect={(rows) => setSelectedRows(rows)}
-      />
+      {/* ✅ InputField demo */}
+      <div className="space-y-4">
+        <InputField
+          label="Your Name"
+          placeholder="Enter your name"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          helperText="This is a helper text"
+          clearable
+          passwordToggle
+          variant="outlined"
+          size="md"
+        />
+        <p className="text-gray-600">You typed: {inputValue}</p>
+      </div>
 
-      {selectedRows.length > 0 && (
-        <p className="mt-4">
-          Selected: {selectedRows.map((row) => row.name).join(", ")}
-        </p>
-      )}
+      {/* ✅ DataTable demo */}
+      <div className="space-y-4">
+        <DataTable<User>
+          data={sampleData}
+          columns={columns}
+          selectable={true}
+          onRowSelect={setSelectedRows}
+        />
+
+        {selectedRows.length > 0 && (
+          <p className="mt-2">
+            Selected: {selectedRows.map((row) => row.name).join(", ")}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
