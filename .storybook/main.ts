@@ -1,19 +1,16 @@
-import type { StorybookConfig } from '@storybook/react-vite';
+import type { StorybookConfig } from "@storybook/react-vite"; // or @storybook/react-webpack5
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.@(ts|tsx)'],
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
   ],
-  export default {
   framework: {
-    name: "@storybook/react-vite",
-    options: {}
-  },
-  docs: {
-    autodocs: 'tag',
+    name: "@storybook/react-vite", // or "@storybook/react-webpack5"
+    options: {},
   },
 };
+
 export default config;
